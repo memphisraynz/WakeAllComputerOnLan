@@ -83,5 +83,3 @@ function WakeAllComputers {
     & $WakeMeOnLanEXE /scan /UseIPAddressesRange 1 /IPAddressFrom $IPRange.start /IPAddressTo $IPRange.end
     & $WakeMeOnLanEXE /wakeupiprange $IPRange.start $IPRange.end
 }
-
-WakeAllComputers
