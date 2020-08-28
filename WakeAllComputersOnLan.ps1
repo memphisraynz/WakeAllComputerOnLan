@@ -80,7 +80,10 @@ function Get-WakeMeOnLan {
 
 function Start-ComputerScan {
     $WakeMeOnLanEXE = "C:\ProgramData\WakeOnLan\WakeMeOnLan.exe"
-        
+
+    #Download WakeMeOnLan if required
+    Get-WakeMeOnLan
+    
     #Get IP Range
     $IPRange = Get-DefaultIpRange
 
@@ -89,6 +92,9 @@ function Start-ComputerScan {
 
 function Start-WakeAllComputers {
     $WakeMeOnLanEXE = "C:\ProgramData\WakeOnLan\WakeMeOnLan.exe"
+    
+    #Download WakeMeOnLan if required
+    Get-WakeMeOnLan
         
     #Get IP Range
     $IPRange = Get-DefaultIpRange
