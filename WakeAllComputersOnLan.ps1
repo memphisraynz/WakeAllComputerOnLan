@@ -65,16 +65,16 @@ function Expand-ZIPFile {
         [string]$DestinationPath
     )
 
-    if (!$destination) {
-        $destination = [string](Resolve-Path $file)
-        $destination = $destination.Substring(0, $destination.LastIndexOf('.'))
-        mkdir $destination | Out-Null
+    if (!$DestinationPath) {
+        $DestinationPath = [string](Resolve-Path $Path)
+        $DestinationPath = $DestinationPath.Substring(0, $DestinationPath.LastIndexOf('.'))
+        New-Item -Path $DestinationPath -ItemType Directory | Out-Null
     }
     $shell = New-Object -ComObject Shell.Application
     #$shell.NameSpace($destination).CopyHere($shell.NameSpace($file).Items(), 16);
-    $zip = $shell.NameSpace($file)
+    $zip = $shell.NameSpace($Path)
     foreach ($item in $zip.items()) {
-        $shell.Namespace($destination).CopyHere($item)
+        $shell.Namespace($DestinationPath).CopyHere($item)
     }
 }
 
