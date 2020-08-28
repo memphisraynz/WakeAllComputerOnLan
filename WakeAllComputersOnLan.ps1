@@ -59,7 +59,7 @@ function Get-DefaultIpRange {
     Get-IPrangeStartEnd -ip $DefaultNIC.IPAddress -cidr $DefaultNIC.PrefixLength
 }
 
-function WakeAllComputers {
+function Start-WakeAllComputers {
     $WakeMeOnLanZIP = "C:\ProgramData\WakeOnLan\WakeMeOnLan.zip"
     $WakeMeOnLanEXE = "C:\ProgramData\WakeOnLan\WakeMeOnLan.exe"
     $DownloadLink = "https://www.nirsoft.net/utils/wakemeonlan-x64.zip"
