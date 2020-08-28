@@ -59,6 +59,25 @@ function Get-DefaultIpRange {
     Get-IPrangeStartEnd -ip $DefaultNIC.IPAddress -cidr $DefaultNIC.PrefixLength
 }
 
+function Expand-ZIPFile {
+    param (
+        [string]$Path,
+        [string]$DestinationPath
+    )
+
+    if (!$destination) {
+        $destination = [string](Resolve-Path $file)
+        $destination = $destination.Substring(0, $destination.LastIndexOf('.'))
+        mkdir $destination | Out-Null
+    }
+    $shell = New-Object -ComObject Shell.Application
+    #$shell.NameSpace($destination).CopyHere($shell.NameSpace($file).Items(), 16);
+    $zip = $shell.NameSpace($file)
+    foreach ($item in $zip.items()) {
+        $shell.Namespace($destination).CopyHere($item)
+    }
+}
+
 function Get-WakeMeOnLan {
     $WakeMeOnLanZIP = "C:\ProgramData\WakeOnLan\WakeMeOnLan.zip"
     $WakeMeOnLanEXE = "C:\ProgramData\WakeOnLan\WakeMeOnLan.exe"
@@ -72,7 +91,7 @@ function Get-WakeMeOnLan {
         #Download File
         (New-Object System.Net.WebClient).DownloadFile($DownloadLink, $WakeMeOnLanZIP)
         #Unzip
-        Expand-Archive -Path $WakeMeOnLanZIP -DestinationPath $(([string]$split[0..($Split.count-2)]) -replace(" ","\"))
+        Expand-ZIPFile -Path $WakeMeOnLanZIP -DestinationPath $(([string]$split[0..($Split.count-2)]) -replace(" ","\"))
         #Remove all except exe file
         Remove-Item -Path "$(([string]$split[0..($Split.count-2)]) -replace(" ","\"))\*" -Exclude "*.exe" -Confirm:$false
     }    
