@@ -59,7 +59,7 @@ function Get-DefaultIpRange {
     Get-IPrangeStartEnd -ip $DefaultNIC.IPAddress -cidr $DefaultNIC.PrefixLength
 }
 
-function Start-WakeAllComputers {
+function Get-WakeMeOnLan {
     $WakeMeOnLanZIP = "C:\ProgramData\WakeOnLan\WakeMeOnLan.zip"
     $WakeMeOnLanEXE = "C:\ProgramData\WakeOnLan\WakeMeOnLan.exe"
     $DownloadLink = "https://www.nirsoft.net/utils/wakemeonlan-x64.zip"
@@ -75,11 +75,23 @@ function Start-WakeAllComputers {
         Expand-Archive -Path $WakeMeOnLanZIP -DestinationPath $(([string]$split[0..($Split.count-2)]) -replace(" ","\"))
         #Remove all except exe file
         Remove-Item -Path "$(([string]$split[0..($Split.count-2)]) -replace(" ","\"))\*" -Exclude "*.exe" -Confirm:$false
-    }
-    
+    }    
+}
+
+function Start-ComputerScan {
+    $WakeMeOnLanEXE = "C:\ProgramData\WakeOnLan\WakeMeOnLan.exe"
+        
     #Get IP Range
     $IPRange = Get-DefaultIpRange
 
     & $WakeMeOnLanEXE /scan /UseIPAddressesRange 1 /IPAddressFrom $IPRange.start /IPAddressTo $IPRange.end
+}
+
+function Start-WakeAllComputers {
+    $WakeMeOnLanEXE = "C:\ProgramData\WakeOnLan\WakeMeOnLan.exe"
+        
+    #Get IP Range
+    $IPRange = Get-DefaultIpRange
+
     & $WakeMeOnLanEXE /wakeupiprange $IPRange.start $IPRange.end
 }
